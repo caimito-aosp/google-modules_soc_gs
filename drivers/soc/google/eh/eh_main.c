@@ -814,7 +814,8 @@ static void eh_deinit_decompression(struct eh_device *eh_dev)
 			*per_cpu_ptr(eh_dev->bounce_buffer, cpu) = 0;
 		}
 	}
-	free_percpu(eh_dev->decomp_done);
+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
+		free_percpu(eh_dev->decomp_done);
 	free_percpu(eh_dev->bounce_buffer);
 	eh_dev->bounce_buffer = NULL;
 }
